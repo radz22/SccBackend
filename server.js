@@ -19,24 +19,20 @@ const app = express();
 app.use(session({ secret: "keyboard cat", cookie: { maxAge: 60000 } }));
 
 // app.set("view engine", "ejs");
-app.use(
-  cors({
-    origin: "https://sccfrontend.onrender.com/",
-    credentials: true, // if you're using cookies or sessions
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(cors());
+
+// app.use(passport.initialize());
+// app.use(passport.session());
 app.use(express.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
 
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
+// passport.serializeUser((user, done) => {
+//   done(null, user);
+// });
 
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
+// passport.deserializeUser((user, done) => {
+//   done(null, user);
+// });
 
 app.use("/UserRoutes", UserRoutes);
 app.use("/auth", GoogleRoutes);

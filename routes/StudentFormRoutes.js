@@ -107,4 +107,5 @@ StudentFormRoutes.post("/studentdelete", async (req, res) => {
     return res.status(401).send("server error");
   }
 });
+
 export default StudentFormRoutes;

@@ -10,13 +10,14 @@ import passport from "passport";
 import StudentFormRoutes from "./routes/StudentFormRoutes.js";
 const app = express();
 app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+// app.use(
+//   session({
+//     secret: "keyboard cat",
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
+app.use(session({ secret: "keyboard cat", cookie: { maxAge: 60000 } }));
 
 // app.set("view engine", "ejs");
 app.use(

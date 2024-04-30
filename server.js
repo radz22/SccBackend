@@ -21,7 +21,7 @@ app.use(session({ secret: "keyboard cat", cookie: { maxAge: 60000 } }));
 // app.set("view engine", "ejs");
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://sccfrontend.onrender.com/",
     credentials: true, // if you're using cookies or sessions
   })
 );

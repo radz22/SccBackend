@@ -42,6 +42,29 @@ UserRoutes.post("/otp", async (req, res) => {
   }
 });
 
+UserRoutes.post("/resetotp", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const randomOTP = generateRandomSixDigits();
+    let transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
+      },
+    });
+    let info = await transporter.sendMail({
+      from: process.env.EMAIL, // Sender address
+      to: email, // List of recipients
+      subject: "OTP FOR RESET PASSWORD", // Subject line
+      text: `Your OTP : ${randomOTP}`, // Plain text body
+    });
+    console.log("Message sent: %s", info.messageId);
+    res.status(200).send({ OTP: randomOTP });
+  } catch {
+    res.status(400).send({ msg: "server error" });
+  }
+});
 UserRoutes.post("/signup", async (req, res) => {
   try {
     const hash = await bcrypt.genSalt(saltRound);
@@ -182,6 +205,28 @@ UserRoutes.post("/deleteuser", async (req, res) => {
     res.status(200).send({ msg: "sucess" });
   } catch {
     res.status(400).send({ msg: "server error" });
+  }
+});
+
+UserRoutes.post("/resetpassword", async (req, res) => {
+  try {
+    const hash = await bcrypt.genSalt(saltRound);
+
+    const { email, password } = req.body;
+    const resetPassword = await UserModel.findOneAndUpdate(
+      { email: email },
+      {
+        password: await bcrypt.hash(password, hash),
+      },
+      { new: true }
+    );
+
+    if (!resetPassword) {
+      return res.status(401).send({ msg: "not sucess" });
+    }
+    return res.status(200).send({ msg: "sucess" });
+  } catch {
+    return res.status(400).send({ msg: "server error" });
   }
 });
 

@@ -68,14 +68,12 @@ GoogleRoutes.get("/user", async (req, res) => {
     }
     const findId = findEmail._id;
     const findbyEmail = findEmail.email;
-    return res
-      .status(200)
-      .send({
-        data: findEmail,
-        status: "true",
-        userid: findId,
-        email: findbyEmail,
-      });
+    return res.status(200).send({
+      data: findEmail,
+      status: "true",
+      userid: findId,
+      email: findbyEmail,
+    });
   } catch {
     return res.status(400).send({ error: "erorr" });
   }
@@ -85,7 +83,7 @@ GoogleRoutes.get("/logout", (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.redirect("http://localhost:5173");
+    res.redirect("https://sccfrontend.onrender.com/");
   });
 });
 

@@ -9,7 +9,6 @@ import session from "express-session";
 import passport from "passport";
 import StudentFormRoutes from "./routes/StudentFormRoutes.js";
 const app = express();
-app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
 // app.use(
 //   session({
 //     secret: "keyboard cat",

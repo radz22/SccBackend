@@ -8,6 +8,7 @@ import GoogleRoutes from "./routes/GoogleRoutes.js";
 import session from "express-session";
 import passport from "passport";
 import StudentFormRoutes from "./routes/StudentFormRoutes.js";
+import MessageRoutes from "./routes/MessageRoutes.js";
 const app = express();
 // app.use(
 //   session({
@@ -37,6 +38,7 @@ app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
 app.use("/UserRoutes", UserRoutes);
 app.use("/auth", GoogleRoutes);
 app.use("/studentform", StudentFormRoutes);
+app.use("/messageroutes", MessageRoutes);
 
 mongoose
   .connect(process.env.MONGODB_URL)

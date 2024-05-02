@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema(
     },
     section: {
       type: String,
-      default: "",
+      default: "empty",
     },
 
     usertype: {

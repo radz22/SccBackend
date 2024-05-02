@@ -96,16 +96,58 @@ StudentFormRoutes.post("/yourprofile", async (req, res) => {
 StudentFormRoutes.post("/studentdelete", async (req, res) => {
   try {
     const { id } = req.body;
-    const findByIdandDelete = await StudentFormModel.findByIdAndDelete({
-      _id: id,
+    const deletedItem = await StudentFormModel.findOneAndDelete({
+      studentid: id,
     });
-    if (!findByIdandDelete) {
-      return res.status(401).send("not sucess");
-    }
-    return res.status(200).send(" sucess");
+
+    const findUser = await UserModel.findOneAndUpdate(
+      { _id: id },
+      {
+        section: "empty",
+      },
+      { new: true }
+    );
+    res.json({ message: `${id} deleted successfully`, findUser });
   } catch {
     return res.status(401).send("server error");
   }
 });
+StudentFormRoutes.post("/editProfile", async (req, res) => {
+  try {
+    const {
+      id,
+      firstname,
+      lastname,
+      middlename,
+      lrn,
+      idstudent,
+      course,
+      gradelevel,
+      schoolyear,
+      type,
+    } = req.body;
+    const findbyId = await StudentFormModel.findOneAndUpdate(
+      { studentid: id },
+      {
+        firstname: firstname,
+        lastname: lastname,
+        middlename: middlename,
+        lrn: lrn,
+        idstudent: idstudent,
+        course: course,
+        gradelevel: gradelevel,
+        schoolyear: schoolyear,
+        type: type,
+      },
+      { new: true }
+    );
+    if (!findbyId) {
+      return res.status(401).send("not sucess");
+    }
 
+    return res.status(200).send(findbyId);
+  } catch {
+    return res.status(400).send({ msg: "server error" });
+  }
+});
 export default StudentFormRoutes;

@@ -31,13 +31,14 @@ StudentFormRoutes.post("/", async (req, res) => {
       type,
     };
 
-    const createUser = await StudentFormModel.create(data);
+    const findId = await StudentFormModel.findOne({ studentid: studentid });
+    if (!findId) {
+      const createUser = await StudentFormModel.create(data);
 
-    if (!createUser) {
-      return res.status(401).send("not sucess");
+      return res.status(200).send(createUser);
     }
 
-    return res.status(200).send(createUser);
+    return res.status(401).send({ msg: "userexist" });
   } catch {
     return res.status(400).send({ msg: "server error" });
   }

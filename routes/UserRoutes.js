@@ -159,6 +159,49 @@ UserRoutes.post("/userdata", async (req, res) => {
   }
 });
 
+UserRoutes.post("/googlefindUser", async (req, res) => {
+  try {
+    const { email, name, images } = req.body;
+    let user = await UserModel.findOne({ email: email });
+
+    if (!user) {
+      const uploadedResponse = await cloudinaryExport.uploader.upload(images, {
+        upload_preset: "LibraryBook",
+      });
+
+      if (uploadedResponse) {
+        user = new UserModel({
+          cloudnaryid: uploadedResponse.public_id,
+          images: uploadedResponse.secure_url,
+          name: name,
+          email: email,
+        });
+      }
+
+      await user.save();
+    }
+
+    return res.send({
+      status: "Success",
+      usertype: user.usertype,
+      userid: user._id,
+      email: user.email,
+    });
+  } catch {
+    return res.status(400).send({ msg: "server erorr" });
+  }
+});
+UserRoutes.post("/googledata", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const findByEmail = await UserModel.findOne({ email: email });
+
+    res.status(200).send({ data: findByEmail });
+  } catch {
+    res.status(400).send({ msg: "server error" });
+  }
+});
 UserRoutes.post("/edituser", async (req, res) => {
   try {
     const { id, images, name } = req.body;
